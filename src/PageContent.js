@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import React, { useContext } from "react";
+import React, { Component } from "react";
 import { ThemeContext } from "./context/ThemeContext";
 
 const CustomTemplate = styled('div')((props) => ({
@@ -8,15 +8,18 @@ const CustomTemplate = styled('div')((props) => ({
     width: "100vw"
 }))
 
-function PageContent({ children }) {
-    const { isDarkMode } = useContext(ThemeContext)
-    return (
-        <CustomTemplate
-            isDarkActive={ isDarkMode }
-        >
-            {children}
-        </CustomTemplate>
-    )
+class PageContent extends Component {
+    static contextType = ThemeContext
+    render() {
+        const { isDarkMode } = this.context
+        return (
+            <CustomTemplate
+                isDarkActive={ isDarkMode }
+            >
+                {this.props.children}
+            </CustomTemplate>
+        )
+    }
 }
 
 export default PageContent
