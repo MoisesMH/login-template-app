@@ -1,25 +1,17 @@
-import React, { Component, createContext } from "react";
+import React, { createContext } from "react";
+import useInputState from "../hooks/useInputState";
 
 export const LanguageContext = createContext()
 
-export class LanguageProvider extends Component {
-    constructor(props) {
-        super(props)
-        this.state = { language: "english" }
-        this.changeLang = this.changeLang.bind(this)
-    }
+export function LanguageProvider({ children }) {
+    const [language, changeLanguage] = useInputState("english")
 
-    changeLang(e) {
-        this.setState({ language: e.target.value })
-    }
-    render() {
-        return (
-            // Passing the prop globally with the context provider
-            <LanguageContext.Provider value={{...this.state, changeLanguage: this.changeLang}}>
-                {this.props.children}
-            </LanguageContext.Provider>
-        )
-    }
+    return (
+        // Passing the prop globally with the context provider
+        <LanguageContext.Provider value={{ language, changeLanguage }}>
+            {children}
+        </LanguageContext.Provider>
+    )
 }
 
 // Workaround: higher order component to consume the language context
